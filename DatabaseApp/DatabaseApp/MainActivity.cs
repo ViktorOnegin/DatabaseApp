@@ -15,6 +15,7 @@ namespace DatabaseApp
         {
             base.OnCreate(savedInstanceState);
             // Set our view from the "main" layout resource
+            // xd Aleksei Narusberg
             SetContentView(Resource.Layout.activity_main);
 
             string databese = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "Narusberg_database.db3");
