@@ -4,7 +4,6 @@ using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
 using System.IO;
-using SQLite;
 
 namespace DatabaseApp
 {
@@ -18,38 +17,19 @@ namespace DatabaseApp
             // xd Aleksei Narusberg
             SetContentView(Resource.Layout.activity_main);
 
-            string databese = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "Narusberg_database.db3");
-            var db = new SQLiteConnection(databese);
+            var databaseSevrice = new DatabaseService();
+            databaseSevrice.CreateDatabase();
+            databaseSevrice.CreateTable();
+            var table = databaseSevrice.GetAllStocks();
+            var listView = FindViewById<ListView>(Resource.Id.listView1);
+            var button1 = FindViewById<Button>(Resource.Id.button1);
+            var editText = FindViewById<EditText>(Resource.Id.)
 
-            db.CreateTable<Stock>();
+            listView.Adapter = new CustomAdapter(this, table.ToList());
 
-            if (db.Table<Stock>().Count() == 0)
-            {
-                var newStock = new Stock();
-                newStock.Symbol = "AAPL";
-                db.Insert(newStock);
-                newStock.Symbol = "LAAP";
-                db.Insert(newStock);
-                newStock.Symbol = "PAAL";
-                db.Insert(newStock);
-                newStock.Symbol = "ALPA";
-                db.Insert(newStock);
-                newStock.Symbol = "PALA";
-                db.Insert(newStock);
-            }
-
-            var table = db.Table<Stock>();
-            foreach (var s in table)
-            {
-                System.Diagnostics.Debug.WriteLine(s.ID + " " + s.Symbol);
-            }
+            
         }
     }
 
-    public class Stock
-    {   [PrimaryKey, AutoIncrement, Column("_ID")]
-        public int ID { get; set; }
-        [MaxLength(8)]
-        public string Symbol { get; set; }
-    }
+    
 }
